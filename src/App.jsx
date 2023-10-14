@@ -2,16 +2,19 @@ import styled from "styled-components"
 import SignupPage from "./pages/signupPage/SignupPage"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import SignInPage from "./pages/signinPage/SigninPage"
+import UserProvider from "./context/UserContext"
 
 export default function App() {
 
   return (
     <PagesContainer>
       <BrowserRouter>
+        <UserProvider>
         <Routes>
           <Route path="/" element={<SignInPage/>} />
           <Route path="/cadastro" element={<SignupPage/>} />
         </Routes>
+        </UserProvider>
       </BrowserRouter>
     </PagesContainer>
   )
