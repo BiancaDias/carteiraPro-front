@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import { SingUpContainer } from "./style";
+import { Container } from "./style";
 
 export default function InputsSignUp(){
   const [email, setEmail] = useState("");
@@ -32,7 +32,7 @@ export default function InputsSignUp(){
       })
   }
   return (
-    <SingUpContainer>
+    <Container>
       <form onSubmit={cadastro}>
         <input 
           placeholder="Nome"
@@ -71,6 +71,6 @@ export default function InputsSignUp(){
       <Link to={"/"}>
         Já tem uma conta? Entre agora!
       </Link>
-    </SingUpContainer>
+    </Container>
   )
 }

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SingUpContainer = styled.section`
+export const Container = styled.section`
   margin-top: 20px;
   display: flex;
   flex-direction: column;

@@ -1,13 +1,15 @@
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useContext } from "react";
+import { User } from "../../../context/UserContext";
+import { Container } from "./style";
 
 export default function InputsignIn(){
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const { setUser } = useContext(User)
   const navigate = useNavigate();
-  const url = `${process.env.REACT_APP_API_URL}`;
+  const url = `${import.meta.env.VITE_REACT_APP_BASE_URL}/users/sign-in`;
   function login(e){
     e.preventDefault();
     const body = {email, password};
@@ -20,13 +22,7 @@ export default function InputsignIn(){
       })
       .catch((err) =>{
         if(err.response.status === 401){
-          alert("senha incorreta");
-        }
-        else if(err.response.status === 404){
-          alert("e-mail não cadastrado");
-        }
-        else if(err.response.status === 422){
-          alert("Favor inserir um e-mail valido")
+          alert("e-mail ou senha incorretos");
         }
         else{
           alert("Um erro inesperado ocorreu! Favor tentar novamente")
@@ -34,9 +30,8 @@ export default function InputsignIn(){
       })
   }
   return (
-    <SingInContainer>
+    <Container>
       <form onSubmit={login}>
-        <MyWalletLogo />
         <input
           placeholder="E-mail" 
           type="email"
@@ -59,6 +54,6 @@ export default function InputsignIn(){
       <Link to={"/cadastro"}>
         Primeira vez? Cadastre-se!
       </Link>
-    </SingInContainer>
+    </Container>
   )
 }
