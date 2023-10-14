@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import SignupPage from "./pages/signupPage/SignupPage"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
+import SignInPage from "./pages/signinPage/SigninPage"
 
 export default function App() {
 
@@ -8,6 +9,7 @@ export default function App() {
     <PagesContainer>
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<SignInPage/>} />
           <Route path="/cadastro" element={<SignupPage/>} />
         </Routes>
       </BrowserRouter>
