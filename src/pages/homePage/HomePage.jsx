@@ -4,6 +4,7 @@ import { User } from "../../context/UserContext";
 import { BiExit } from "react-icons/bi"
 import Transactions from "../../components/transactions/Transactions";
 import { useNavigate } from "react-router-dom";
+import ButtonsTransactions from "../../components/buttons/buttonsTransactions/ButtonsTransactions";
 
 export default function HomePage(){
   const { user, setUser } = useContext(User);
@@ -21,6 +22,7 @@ export default function HomePage(){
         <BiExit onClick={logOut} />
       </Header>
       <Transactions/>
+      <ButtonsTransactions/>
     </HomeContainer>
   )
 }

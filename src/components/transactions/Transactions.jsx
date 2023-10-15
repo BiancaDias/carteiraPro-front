@@ -1,6 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { ButtonsContainer, ListItemContainer, TransactionsContainer, TransactionsContainerEmpty, Value } from "./style";
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from "react-icons/ai"
+import { useNavigate } from "react-router-dom";
+import { ListItemContainer, TransactionsContainer, TransactionsContainerEmpty, Value } from "./style";
 import { useContext, useEffect, useState } from "react";
 import { User } from "../../context/UserContext";
 import axios from "axios";
@@ -8,7 +7,7 @@ import { sumTotal } from "../../utils/sumTotal";
 
 export default function Transactions(){
   const navigate = useNavigate();
-  const { user, setUser } = useContext(User);
+  const { user } = useContext(User);
   const [transactions, setTransactions] = useState([]);
   const [balance, setBalance] = useState(0)
   const config = {
@@ -18,7 +17,6 @@ export default function Transactions(){
   }
 
   useEffect(() => {
-    
     const url = `${import.meta.env.VITE_REACT_APP_BASE_URL}/transactions`
     axios.get(url, config)
       .then(e => {
@@ -58,23 +56,6 @@ export default function Transactions(){
       <TransactionsContainerEmpty>
         <p>Não há registros de entrada ou saída</p>
       </TransactionsContainerEmpty>}
-
-
-      <ButtonsContainer>
-        <Link to={"/nova-transacao/entrada"}>
-          <button>
-            <AiOutlinePlusCircle />
-            <p>Nova <br /> entrada</p>
-          </button>
-        </Link>
-        <Link to={"/nova-transacao/saida"}>
-          <button>
-            <AiOutlineMinusCircle />
-            <p>Nova <br />saída</p>
-          </button>
-        </Link>
-      </ButtonsContainer>
-
     </>
   )
 }
