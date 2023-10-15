@@ -3,6 +3,7 @@ import SignupPage from "./pages/signupPage/SignupPage"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import SignInPage from "./pages/signinPage/SigninPage"
 import UserProvider from "./context/UserContext"
+import HomePage from "./pages/homePage/HomePage"
 
 export default function App() {
 
@@ -13,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<SignInPage/>} />
           <Route path="/cadastro" element={<SignupPage/>} />
+          <Route path="/home" element={<HomePage/>} />
         </Routes>
         </UserProvider>
       </BrowserRouter>
