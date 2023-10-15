@@ -8,5 +8,5 @@ export function sumTotal(transactions) {
       total += value;
     }
   })
-  return total;
+  return total / 100;
 }

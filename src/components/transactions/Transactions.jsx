@@ -24,8 +24,8 @@ export default function Transactions(){
       .then(e => {
         console.log(e)
         setTransactions(e.data);
-        console.log((sumTotal(e.data)/100))
-        setBalance(sumTotal(e.data)/100)
+        console.log(sumTotal(e.data))
+        setBalance(sumTotal(e.data))
       })
       .catch(e => { 
         if(!user.token){

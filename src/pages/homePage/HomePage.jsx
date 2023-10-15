@@ -1,12 +1,19 @@
 import { useContext } from "react";
 import { Header, HomeContainer } from "./style";
 import { User } from "../../context/UserContext";
-import { logOut } from "../../utils/logout";
 import { BiExit } from "react-icons/bi"
 import Transactions from "../../components/transactions/Transactions";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage(){
   const { user, setUser } = useContext(User);
+  const navigate = useNavigate();
+
+  function logOut() {
+    setUser(null);
+    localStorage.setItem("user", JSON.stringify({}));
+    navigate('/')
+  }
   return(
     <HomeContainer>
       <Header>
