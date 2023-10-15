@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import SignInPage from "./pages/signinPage/SigninPage"
 import UserProvider from "./context/UserContext"
 import HomePage from "./pages/homePage/HomePage"
+import TransactionPage from "./pages/transactionPage/TransactionPage"
 
 export default function App() {
 
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<SignInPage/>} />
           <Route path="/cadastro" element={<SignupPage/>} />
           <Route path="/home" element={<HomePage/>} />
+          <Route path="/nova-transacao/:type" element={<TransactionPage/>} />
         </Routes>
         </UserProvider>
       </BrowserRouter>
