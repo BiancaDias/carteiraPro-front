@@ -2,15 +2,23 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { User } from "../../context/UserContext";
-import { Header, TransactionsContainer } from "./style";
+import { ButtonAddStyle, Container, Header, TransactionsContainer } from "./style";
 import { FaArrowLeft } from 'react-icons/fa';
+import Select from "../selectTypes/SelectTypes";
+import ButtonAdd from "../buttons/buttomAddNew/ButtonAdd";
+import { AiOutlinePlusCircle } from "react-icons/ai"
 
 export default function NewTransaction({type}) {
   
   const { user } = useContext(User);
   const [valor, setValor] = useState("");
   const [descricao, setDescricao] = useState("")
-  const [banks, setBanks] = useState("")
+  const [banks, setBanks] = useState([])
+  const [selectBank, setSelectBank] = useState("")
+  const [types, setTypes] = useState([])
+  const [selectTypes, setSelectTypes] = useState("")
+  const [open, setOpen] = useState(false)
+  const [bankOrType, setBankOrType] = useState()
   const navigate = useNavigate()
   const urlbase = import.meta.env.VITE_REACT_APP_BASE_URL
   const config = {
@@ -18,17 +26,30 @@ export default function NewTransaction({type}) {
       "Authorization": `Bearer ${user.token}`
     }
   }
+
+  function openNew(open){
+    setBankOrType(open)
+    setOpen(true)
+  }
+  console.log(selectBank)
   useEffect(()=>{
-    const url = `${urlbase}/banks`
-    axios.get(url, config)
+    axios.get(`${urlbase}/banks`, config)
       .then((e) => {
         setBanks(e.data)
-        console.log(e.data)
       })
       .catch((e) =>{
         console.log(e)
       })
-  },[])
+
+    axios.get(`${urlbase}/types`, config)
+    .then((e) => {
+      setTypes(e.data)
+      console.log(e.data)
+    })
+    .catch((e) =>{
+      console.log(e)
+    })
+  },[open])
   function goBack(){
     navigate("/home")
   }
@@ -75,12 +96,17 @@ export default function NewTransaction({type}) {
           onChange = {e => setDescricao(e.target.value)}
           required
         />
-        {/* <div>
-          <label htmlFor="bank"> </label>
-          <select
-            id=""
-        </div> */} 
-        <button>Salvar {type}</button>
+          <Container>
+            <Select name={"banco"} options={banks} select={selectBank} setSelect={setSelectBank}/>
+            <ButtonAddStyle onClick={() =>openNew("banco")} type="button"><AiOutlinePlusCircle/></ButtonAddStyle>
+            <ButtonAdd open={open} name={bankOrType} setOpen={setOpen}/>
+          </Container>
+          <Container>
+            <Select name={"tipo"} options={types} select={selectTypes} setSelect={setSelectTypes}/>
+            <ButtonAddStyle onClick={()=> openNew("tipo")} type="button"><AiOutlinePlusCircle/></ButtonAddStyle>
+            <ButtonAdd open={open} name={bankOrType} setOpen={setOpen}/>
+          </Container>
+        <button type="submit">Salvar {type}</button>
       </form>
     </TransactionsContainer>
   )

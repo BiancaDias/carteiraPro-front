@@ -12,13 +12,25 @@ const TransactionsContainer = styled.main`
     margin-bottom: 40px;
   }
 `
-
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
 `
+const Container = styled.div`
+  display: flex;
+`
+const ButtonAddStyle = styled.button`
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+`
+
 export {
   TransactionsContainer,
-  Header
+  Header,
+  Container,
+  ButtonAddStyle
 }
