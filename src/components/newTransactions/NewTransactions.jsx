@@ -5,18 +5,18 @@ import { User } from "../../context/UserContext";
 import { ButtonAddStyle, Container, Header, TransactionsContainer } from "./style";
 import { FaArrowLeft } from 'react-icons/fa';
 import Select from "../selectTypes/SelectTypes";
-import ButtonAdd from "../buttons/buttomAddNew/ButtonAdd";
 import { AiOutlinePlusCircle } from "react-icons/ai"
+import InsertNew from "../insertNew/InsertNew";
 
 export default function NewTransaction({type}) {
   
   const { user } = useContext(User);
-  const [valor, setValor] = useState("");
-  const [descricao, setDescricao] = useState("")
+  const [value, setValue] = useState("R$ 0,00");
+  const [description, setDescription] = useState("")
   const [banks, setBanks] = useState([])
-  const [selectBank, setSelectBank] = useState("")
+  const [bankId, setBankId] = useState("")
   const [types, setTypes] = useState([])
-  const [selectTypes, setSelectTypes] = useState("")
+  const [typeId, setTypeId] = useState("")
   const [open, setOpen] = useState(false)
   const [bankOrType, setBankOrType] = useState()
   const navigate = useNavigate()
@@ -26,12 +26,28 @@ export default function NewTransaction({type}) {
       "Authorization": `Bearer ${user.token}`
     }
   }
-
+  const handleInputChange = (e) => {
+    let numericValue = e.target.value.replace(/\D/g, '');
+    console.log(numericValue)
+    if(numericValue.length === 4 && numericValue[0] === "0"){
+      console.log("entra aqui")
+      numericValue = numericValue.substring(1);
+    }
+    if (numericValue.length > 2) {
+      const reais = numericValue.slice(0, -2);
+      const centavos = numericValue.slice(-2);
+      setValue(`R$ ${reais},${centavos}`);
+    } else if (numericValue.length > 0) {
+      const centavos = numericValue.padStart(2, '0');
+      setValue(`R$ 0,${centavos}`);
+    } else {
+      setValue('R$ 0,00');
+    }
+  };
   function openNew(open){
     setBankOrType(open)
     setOpen(true)
   }
-  console.log(selectBank)
   useEffect(()=>{
     axios.get(`${urlbase}/banks`, config)
       .then((e) => {
@@ -56,14 +72,17 @@ export default function NewTransaction({type}) {
   function transaction(e){
     e.preventDefault();
     const url = `${urlbase}/transactions`
-    let novoValor = valor;
-    if(valor.includes(",")){
-      novoValor = valor.replace(",",".")
-    }
-    const body = {valor:novoValor, descricao, tipo}
+    const amount = Number(value.replace(/\D/g, ''));
+    if(amount === 0) alert("O valor precisa ser maior que 0")
+    if(bankId === "" || typeId=== "") alert("Selecione o banco e o tipo")
+
+    const numberBank = Number(bankId)
+    const numberType = Number(typeId)
+    const body = {amount, description, typebalance: type, bankId: numberBank, typeId: numberType}
     axios.post(url, body, config)
       .then(() => navigate("/home"))
       .catch((err) =>{
+        console.log(err)
         if(err.response.status === 401 || err.response.status === 404){
           alert("Usuario deslogado! Por favor, faça login");
           navigate("/")
@@ -73,6 +92,7 @@ export default function NewTransaction({type}) {
         }
       })
   }
+
   return (
     <TransactionsContainer>
       <Header>
@@ -80,33 +100,32 @@ export default function NewTransaction({type}) {
         <FaArrowLeft color="#fff" size={20} onClick={goBack}/>
       </Header>
       <form onSubmit={transaction}>
-        <input 
-          placeholder="Valor" 
+        <input
+          placeholder="Valor"
           type="text"
-          id="valor"
-          value={valor}
-          onChange={e => setValor(e.target.value)}
+          value={value}
+          onChange={handleInputChange}
           required
         />
         <input 
           placeholder="Descrição" 
           type="text" 
           id="descricao"
-          value={descricao}
-          onChange = {e => setDescricao(e.target.value)}
+          value={description}
+          onChange = {e => setDescription(e.target.value)}
           required
         />
           <Container>
-            <Select name={"banco"} options={banks} select={selectBank} setSelect={setSelectBank}/>
+            <Select name={"banco"} options={banks} select={bankId} setSelect={setBankId}/>
             <ButtonAddStyle onClick={() =>openNew("banco")} type="button"><AiOutlinePlusCircle/></ButtonAddStyle>
-            <ButtonAdd open={open} name={bankOrType} setOpen={setOpen}/>
+            <InsertNew open={open} name={bankOrType} setOpen={setOpen}/>
           </Container>
           <Container>
-            <Select name={"tipo"} options={types} select={selectTypes} setSelect={setSelectTypes}/>
+            <Select name={"tipo"} options={types} select={typeId} setSelect={setTypeId}/>
             <ButtonAddStyle onClick={()=> openNew("tipo")} type="button"><AiOutlinePlusCircle/></ButtonAddStyle>
-            <ButtonAdd open={open} name={bankOrType} setOpen={setOpen}/>
+            <InsertNew open={open} name={bankOrType} setOpen={setOpen}/>
           </Container>
-        <button type="submit">Salvar {type}</button>
+        <button onClick={transaction} type="submit">Salvar {type}</button>
       </form>
     </TransactionsContainer>
   )

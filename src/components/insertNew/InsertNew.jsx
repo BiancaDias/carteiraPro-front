@@ -1,9 +1,9 @@
 import { Container } from "./style"
 import { useContext, useState } from "react"
 import axios from "axios";
-import { User } from "../../../context/UserContext";
+import { User } from "../../context/UserContext";
 
-export default function ButtonAdd({name, open, setOpen}){
+export default function InsertNew({name, open, setOpen}){
   const [newName, setNewName] = useState("")
   const { user } = useContext(User);
 
