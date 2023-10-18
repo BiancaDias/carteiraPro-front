@@ -20,8 +20,7 @@ export default function Transactions(){
     const url = `${import.meta.env.VITE_REACT_APP_BASE_URL}/transactions`
     axios.get(url, config)
       .then(e => {
-        console.log(e)
-        setTransactions(e.data);
+        setTransactions(e.data.reverse());
         console.log(sumTotal(e.data))
         setBalance(sumTotal(e.data))
       })
